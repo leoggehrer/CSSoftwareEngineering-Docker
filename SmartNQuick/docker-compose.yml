@@ -28,7 +28,6 @@ services:
       - "34790:80"
     depends_on:
       - dbserver
-      - snqtranslator.webapi
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
