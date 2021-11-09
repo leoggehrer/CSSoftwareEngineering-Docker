@@ -3,7 +3,7 @@
 ## Portliste der MicroApps
 
 |Anwendung               |Port |Anmerkung|
-|------------------------|-----|         |
+|------------------------|-----|---------|
 |MSSQL                   |14330|         |
 |                        |     |         |
 |SnQTranslator-WebApi    |34785|         |
