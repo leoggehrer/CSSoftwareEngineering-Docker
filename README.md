@@ -1,5 +1,23 @@
 # CSSoftwareEngineering-Docker
 
+## Portliste der MicroApps
+
+|Anwendung               |Port |Anmerkung|
+|------------------------|-----|         |
+|MSSQL                   |14330|         |
+|                        |     |         |
+|SnQTranslator-WebApi    |34785|         |
+|SnQTranslator-AspMvc    |34790|         |
+|                        |     |         |
+|SnQMusicStore-WebApi    |34795|         |
+|SnQMusicStore-AspMvc    |34800|         |
+|                        |     |         |
+|SnQTradingCompany-WebApi|34805|         |
+|SnQTradingCompany-AspMvc|34810|         |
+|                        |     |         |
+|SnQHtmlStore-WebApi     |34815|         |
+|SnQHtmlStore-AspMvc     |34820|         |
+
 ## Container-MSSQL
 
 Der MSSQL-Server kann nach belieben konfiguriert werden und in einem eigenen Container gestartet werden. In diesem Scenario wird der Server Standard-Port 1433 nach außen mit 14330 gebunden. Als externes Verzeichnis ist **'C:\Share\Docker\MSSQL'** konfiguriert.
@@ -45,6 +63,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_CONNECTIONSTRING=Server=host.docker.internal,14330; Database=SnQMusicStoreDb; User Id=sa;Password=passme!1234
+      - ASPNETCORE_TRANSLATIONSERVER=http://host.docker.internal:34785/api
+      - ASPNETCORE_STATICPAGESERVER=http://host.docker.internal:34820/api
     ports:
       - "34800:80"
     volumes:
@@ -84,6 +104,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_CONNECTIONSTRING=Server=host.docker.internal,14330; Database=SnQMusicStoreDb; User Id=sa;Password=passme!1234
       - ASPNETCORE_TRANSLATIONSERVER=http://host.docker.internal:34785/api
+      - ASPNETCORE_STATICPAGESERVER=http://host.docker.internal:34820/api
     ports:
       - "34800:80"
     volumes:
@@ -91,3 +112,42 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 ```
 
+## SnQMusicStore and SnQHtmlStore with SnQTranslator
+
+![ContainerStettings-SnQMusicStoreWithTranslator](ContainerSettings-SnQMusicStoreAndSnQHtmlStoreWithTranslator.png)
+
+### docker-compose
+
+```code
+version: '3.4'
+
+services:
+  snqhtmlstore.webapi:
+    image: "snqhtmlstorewebapi"
+    container_name: snqhtmlstore.webapi
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_CONNECTIONSTRING=Server=host.docker.internal,14330; Database=SnQHtmlStoreDb; User Id=sa;Password=passme!1234
+    ports:
+      - "34815:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  snqmusicstore.aspmvc:
+    image: "snqhtmlstoreaspmvc"
+    container_name: snqhtmlstore.aspmvc
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_CONNECTIONSTRING=Server=host.docker.internal,14330; Database=SnQHtmlStoreDb; User Id=sa;Password=passme!1234
+      - ASPNETCORE_TRANSLATIONSERVER=http://host.docker.internal:34785/api
+      - ASPNETCORE_STATICPAGESERVER=http://host.docker.internal:34820/api
+    ports:
+      - "34820:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+```
