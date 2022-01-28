@@ -30,6 +30,25 @@ Nachfolgend das Kommando für das Starten des MSSQL-Servers in einem eigenen Con
 
 > docker run --name mssql -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passme!1234" -p 14330:1433 -v C:\Share\Docker\MSSQL:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server
 
+### [docker-compose](DbServer/docker-compose.yml) (DbServer)
+
+```code
+version: '3.4'
+
+services:
+  dbserver:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: mssql
+    restart: always
+    environment:
+      SA_PASSWORD: "passme!1234"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "14330:1433"
+    volumes:
+      - "C:\\Share\\Docker\\MSSQL:/var/opt/mssql/data/"
+```
+
 ## Container-SnQMusicStore
 
 Die MicroApp **'SnQMusicStore'** wird in einem Container gestartet und interargiert mit dem Microsoft SQL-Server in einem anderen Container. Der Web-Service **'snqmusicstore.webapi'** ist mit dem Port 34795 konfiguriert und die Web-App **'snqmusicstore.aspmvc'** mit dem Port 34800. Das entsprechende Docker-compose File befindet sich nach der Abbildung.
