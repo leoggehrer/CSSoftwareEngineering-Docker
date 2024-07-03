@@ -28,7 +28,7 @@ Nachfolgend das Kommando für das Starten des MSSQL-Servers in einem eigenen Con
 
 ### docker-command
 
-> docker run --name mssql -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passme!1234" -p 14330:1433 -v C:\Share\Docker\MSSQL:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server
+> docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=passme!1234" -p 14330:1433 -v C:\Share\Docker\MSSQL:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server --name mssql 
 
 ### [docker-compose](DbServer/docker-compose.yml) (DbServer)
 
